@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sullivan.lmall.dao.UserMapper">
+
+    <select id="queryUserList" resultType="User">
+        select
+        id as userId,
+        username,
+        password,
+        icon as userIcon,
+        email as userEmail,
+        nick_name as nickName,
+        note as userNote,
+        create_time as createTime,
+        login_time as loginTime,
+        status as userStatus
+        from ums_user;
+    </select>
+
+</mapper>
