@@ -52,5 +52,14 @@
         select * from ums_user where username=#{username}
     </select>
 
+    <update id="updatePasswordByUid">
+        update ums_user set
+            password = #{password}, modified_user = #{modifiedUser}, modified_time = #{modifiedTime}
+        where uid = #{uid}
+    </update>
+
+    <select id="findByUid" resultMap="UserEntityMap">
+        select * from ums_user where uid = #{uid}
+    </select>
 
 </mapper>

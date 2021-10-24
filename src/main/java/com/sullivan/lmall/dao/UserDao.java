@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,5 +32,24 @@ public interface UserDao {
      * @return user
      */
     User getUserByName(@Param("username") String username);
+
+    /**
+     * 根据用户的Uid来修改用户密码
+     *
+     * @param uid 用户的id
+     * @param password 用户新输入的密码
+     * @param modifiedUser 修改的执行者
+     * @param modifiedTime 修改的时间
+     * @return 受影响的行数
+     */
+    Integer updatePasswordByUid(Integer uid, String password, String modifiedUser, Date modifiedTime);
+
+    /**
+     * 根据用户的id查询用户的数据
+     *
+     * @param uid 用户的id
+     * @return 如果找到则返回对象，反之返回null值
+     */
+    User findByUid(Integer uid);
 
 }

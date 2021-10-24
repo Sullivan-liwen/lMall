@@ -3,10 +3,7 @@ package com.sullivan.lmall.service.impl;
 import com.sullivan.lmall.dao.UserDao;
 import com.sullivan.lmall.model.User;
 import com.sullivan.lmall.service.UserService;
-import com.sullivan.lmall.service.ex.InsertException;
-import com.sullivan.lmall.service.ex.PasswordNotMatchException;
-import com.sullivan.lmall.service.ex.UserNotFoundException;
-import com.sullivan.lmall.service.ex.UsernameDuplicateException;
+import com.sullivan.lmall.service.ex.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -68,7 +65,7 @@ public class UserServiceImpl implements UserService {
         String oldPassword = result.getPassword();
         String salt = result.getSalt();
         String newPassword = getMD5Password(password, salt);
-        if (oldPassword.equals(newPassword)) {
+        if (!oldPassword.equals(newPassword)) {
             throw new PasswordNotMatchException("用户密码错误");
         }
         // 判断is_delete字段是否为1 表示被标记删除
@@ -81,6 +78,25 @@ public class UserServiceImpl implements UserService {
         user.setAvatar(result.getAvatar());
         // 传递当前对象的一些指定字段给前端
         return user;
+    }
+
+    @Override
+    public void changePassword(Integer uid, String username, String oldPassword, String newPassword) {
+        User user = userDao.findByUid(uid);
+        if (user == null || user.getIsDelete() == 1) {
+            throw new UserNotFoundException("用户数据不存在！");
+        }
+        // 原始密码和数据库中的密码进行比较
+        String oldMd5Password = getMD5Password(oldPassword, user.getSalt());
+        if (!user.getPassword().equals(oldMd5Password)) {
+            throw new PasswordNotMatchException("密码错误!");
+        }
+        // 将新的密码设置到数据库中，将新的密码进行加密再去更新
+        String newMd5Password = getMD5Password(newPassword, user.getSalt());
+        Integer row = userDao.updatePasswordByUid(uid, newMd5Password, username, new Date());
+        if (row != 1) {
+            throw new UpdateException("更新数据时产生的未知的异常！");
+        }
     }
 
     /**

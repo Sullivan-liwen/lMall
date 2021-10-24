@@ -2,12 +2,9 @@ package com.sullivan.lmall.controller;
 
 import com.sullivan.lmall.model.User;
 import com.sullivan.lmall.service.UserService;
-import com.sullivan.lmall.service.ex.InsertException;
-import com.sullivan.lmall.service.ex.UsernameDuplicateException;
 import com.sullivan.lmall.util.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
@@ -37,5 +34,14 @@ public class UserController extends BaseController {
         session.setAttribute("uid", userData.getUid());
         session.setAttribute("username", userData.getUsername());
         return new JsonResult<>(OK, userData);
+    }
+
+    @RequestMapping("/update-password")
+    public JsonResult<Void> updateUserPassword(String oldPassword,
+                                               String newPassword, HttpSession session) {
+        Integer uid = getUidFromSession(session);
+        String username = getUsernameFromSession(session);
+        userService.changePassword(uid, username, oldPassword, newPassword);
+        return new JsonResult<>(OK);
     }
 }

@@ -19,4 +19,9 @@ public interface UserService {
      * 用户登录的方法
      */
     User loginUser(String username, String password);
+
+    /**
+     * 用户修改密码的方法
+     */
+    void changePassword(Integer uid, String username, String oldPassword, String newPassword);
 }
