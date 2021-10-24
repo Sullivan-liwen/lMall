@@ -2,21 +2,55 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.sullivan.lmall.dao.UserMapper">
-
-    <select id="queryUserList" resultType="User">
-        select
-        id as userId,
+<mapper namespace="com.sullivan.lmall.dao.UserDao">
+    <resultMap id="UserEntityMap" type="com.sullivan.lmall.model.User">
+        <!--将表中的字段和类的属性不一样的字段进行匹配，名称一致的字段可以省略不写-->
+        <!--主键是不可以省略的-->
+        <id column="uid" property="uid"/>
+        <result column="is_delete" property="isDelete"/>
+        <result column="created_user" property="createdUser"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="modified_user" property="modifiedUser"/>
+        <result column="modified_time" property="modifiedTime"/>
+    </resultMap>
+    <!--
+        useGeneratedKeys属性： 表示开启某个字段的值递增
+        keyProperty属性： 标签将表中的哪个字段作为主键进行递增
+    -->
+    <insert id="registerUser" useGeneratedKeys="true" keyProperty="uid">
+        INSERT INTO ums_user (
         username,
         password,
-        icon as userIcon,
-        email as userEmail,
-        nick_name as nickName,
-        note as userNote,
-        create_time as createTime,
-        login_time as loginTime,
-        status as userStatus
-        from ums_user;
+        salt,
+        phone,
+        email,
+        gender,
+        avatar,
+        is_delete,
+        created_user,
+        created_time,
+        modified_user,
+        modified_time
+        )
+        VALUES (
+            #{username},
+            #{password},
+            #{salt},
+            #{phone},
+            #{email},
+            #{gender},
+            #{avatar},
+            #{isDelete},
+            #{createdUser},
+            #{createdTime},
+            #{modifiedUser},
+            #{modifiedTime}
+        )
+    </insert>
+
+    <select id="getUserByName" resultMap="UserEntityMap">
+        select * from ums_user where username=#{username}
     </select>
+
 
 </mapper>

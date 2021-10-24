@@ -2,9 +2,6 @@ package com.sullivan.lmall.model;
 
 import lombok.*;
 
-import java.math.BigDecimal;
-import java.sql.Date;
-
 /**
  * 描述
  *
@@ -15,43 +12,30 @@ import java.sql.Date;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
-    private BigDecimal userId;
+public class User extends BaseEntity {
+    private Integer uid;
     private String username;
     private String password;
 
     /**
+     * 盐值
+     */
+    private String salt;
+    private String phone;
+    private String email;
+
+    /**
+     * 性别:0-女，1-男
+     */
+    private Integer gender;
+
+    /**
      * 头像
      */
-    private String userIcon;
+    private String avatar;
 
     /**
-     * 邮箱
+     * 是否删除：0-未删除，1-已删除
      */
-    private String userEmail;
-
-    /**
-     * 昵称
-     */
-    private String nickName;
-
-    /**
-     * 备注信息
-     */
-    private String userNote;
-
-    /**
-     * 创建时间
-     */
-    private Date createTime;
-
-    /**
-     * 最后登录时间
-     */
-    private Date loginTime;
-
-    /**
-     * 帐号启用状态：0->禁用；1->启用
-     */
-    private int userStatus;
+    private Integer isDelete;
 }
