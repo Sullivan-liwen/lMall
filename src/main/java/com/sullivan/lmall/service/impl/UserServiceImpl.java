@@ -99,6 +99,35 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public User getUserInfoByUid(Integer uid) {
+        User user = userDao.findByUid(uid);
+        if (user == null || user.getIsDelete() == 1) {
+            throw new UserNotFoundException("用户数据不存在!");
+        }
+        User result = new User();
+        result.setUsername(user.getUsername());
+        result.setPhone(user.getPhone());
+        result.setEmail(user.getEmail());
+        result.setGender(user.getGender());
+        return result;
+    }
+
+    @Override
+    public void updateUserInfo(Integer uid, String username, User user) {
+        User result = userDao.findByUid(uid);
+        if (result == null || result.getIsDelete() == 1) {
+            throw new UserNotFoundException("用户数据不存在!");
+        }
+        user.setUid(uid);
+        user.setModifiedUser(username);
+        user.setModifiedTime(new Date());
+        Integer row = userDao.updateInfoByUid(user);
+        if (row != 1) {
+            throw new UpdateException("更新数据时产生未知的异常!");
+        }
+    }
+
     /**
    * MD5密码加密处理
    *

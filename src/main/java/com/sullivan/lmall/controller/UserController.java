@@ -4,6 +4,7 @@ import com.sullivan.lmall.model.User;
 import com.sullivan.lmall.service.UserService;
 import com.sullivan.lmall.util.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,6 +43,20 @@ public class UserController extends BaseController {
         Integer uid = getUidFromSession(session);
         String username = getUsernameFromSession(session);
         userService.changePassword(uid, username, oldPassword, newPassword);
+        return new JsonResult<>(OK);
+    }
+
+    @GetMapping("/getByUid")
+    public JsonResult<User> getUserByUid(HttpSession session) {
+        User userInfoByUid = userService.getUserInfoByUid(getUidFromSession(session));
+        return new JsonResult<>(OK, userInfoByUid);
+    }
+
+    @RequestMapping("/update-info")
+    public JsonResult<Void> updateUserInfo(User user, HttpSession session) {
+        Integer uid = getUidFromSession(session);
+        String username = getUsernameFromSession(session);
+        userService.updateUserInfo(uid, username, user);
         return new JsonResult<>(OK);
     }
 }

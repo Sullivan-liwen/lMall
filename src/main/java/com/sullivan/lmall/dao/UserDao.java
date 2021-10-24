@@ -42,7 +42,10 @@ public interface UserDao {
      * @param modifiedTime 修改的时间
      * @return 受影响的行数
      */
-    Integer updatePasswordByUid(Integer uid, String password, String modifiedUser, Date modifiedTime);
+    Integer updatePasswordByUid(@Param("uid") Integer uid,
+                                @Param("password") String password,
+                                @Param("modifiedUser") String modifiedUser,
+                                @Param("modifiedTime") Date modifiedTime);
 
     /**
      * 根据用户的id查询用户的数据
@@ -51,5 +54,13 @@ public interface UserDao {
      * @return 如果找到则返回对象，反之返回null值
      */
     User findByUid(Integer uid);
+
+    /**
+     * 更新用户的信息
+     *
+     * @param user 用户的数据
+     * @return 受影响的行数
+     */
+    Integer updateInfoByUid(User user);
 
 }

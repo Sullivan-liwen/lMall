@@ -24,4 +24,14 @@ public interface UserService {
      * 用户修改密码的方法
      */
     void changePassword(Integer uid, String username, String oldPassword, String newPassword);
+
+    /**
+     * 获得当前用户的登录信息
+     */
+    User getUserInfoByUid(Integer uid);
+
+    /**
+     * 修改用户的资料信息
+     */
+    void updateUserInfo(Integer uid, String username, User user);
 }
