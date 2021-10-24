@@ -34,4 +34,9 @@ public interface UserService {
      * 修改用户的资料信息
      */
     void updateUserInfo(Integer uid, String username, User user);
+
+    /**
+     * 修改用户的头像信息
+     */
+    void updateAvatarByUid(Integer uid, String avatar, String username);
 }

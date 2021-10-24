@@ -128,6 +128,18 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public void updateAvatarByUid(Integer uid, String avatar, String username) {
+        User user = userDao.findByUid(uid);
+        if (user == null || user.getIsDelete() == 1) {
+            throw new UserNotFoundException("用户数据不存在!");
+        }
+        Integer row = userDao.updateAvatarByUid(uid, avatar, username, new Date());
+        if (row != 1) {
+            throw new UpdateException("更新用户头像时产生未知的异常!");
+        }
+    }
+
     /**
    * MD5密码加密处理
    *

@@ -72,4 +72,10 @@
         where uid = #{uid}
     </update>
 
+    <update id="updateAvatarByUid">
+        update ums_user set
+            avatar = #{avatar}, modified_user = #{modifiedUser}, modified_time = #{modifiedTime}
+        where uid = #{uid}
+    </update>
+
 </mapper>

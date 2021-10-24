@@ -1,5 +1,6 @@
 package com.sullivan.lmall.controller;
 
+import com.sullivan.lmall.controller.ex.*;
 import com.sullivan.lmall.service.ex.*;
 import com.sullivan.lmall.util.JsonResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,7 +20,7 @@ public class BaseController {
     // 请求处理方法，这个方法的返回值就是需要传递给前端的数据
     // 自动将异常对象传递给此方法的参数列表上
     // 当项目中产生了异常，被统一拦截到此方法中，这个方法此时就充当的是请求处理方法，方法的返回值直接给到前端
-    @ExceptionHandler(ServiceException.class) // 用于统一处理跑出的异常
+    @ExceptionHandler({ServiceException.class, FileUploadException.class}) // 用于统一处理跑出的异常
     public JsonResult handleException(Throwable e) {
         JsonResult result = new JsonResult<>(e);
         if (e instanceof UsernameDuplicateException) {
@@ -37,6 +38,16 @@ public class BaseController {
         } else if (e instanceof UpdateException) {
             result.setState(5001);
             result.setMessage("更新数据时产生未知的异常");
+        } else if (e instanceof FileEmptyException) {
+            result.setState(6000);
+        } else if (e instanceof FileSizeException) {
+            result.setState(6001);
+        } else if (e instanceof FileTypeException) {
+            result.setState(6002);
+        } else if (e instanceof FileStateException) {
+            result.setState(6003);
+        } else if (e instanceof FileUploadIOException) {
+            result.setState(6004);
         }
         return result;
     }
